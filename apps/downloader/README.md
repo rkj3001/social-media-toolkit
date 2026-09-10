@@ -4,6 +4,47 @@ The Downloader is the first application in Social Media Toolkit. It will run as 
 localhost web application and create an organized, deduplicated media library on
 an external hard drive.
 
+## Current implementation
+
+The first runnable foundation is available:
+
+- Typed per-device configuration.
+- External-drive validation with no internal-drive fallback.
+- Alembic-managed SQLite source and job tables.
+- Instagram profile URL validation and normalization.
+- Localhost pages for creating and inspecting categorized jobs.
+
+The current job runner records jobs as `queued`. It does not make Instagram
+network requests yet; discovery begins after a permitted access method is chosen.
+
+## Local setup
+
+Install Python 3.12 or later. FFmpeg is required when media processing is added,
+but it is not needed to view the current job UI.
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -e ".[dev]"
+Copy-Item .env.example .env
+```
+
+Edit `.env` so `MEDIA_LIBRARY_ROOT` points to an existing folder on the external
+drive, then initialize the database and start the server:
+
+```powershell
+smt-migrate
+smt-downloader
+```
+
+Open `http://127.0.0.1:8000`. Stop the server before disconnecting the drive.
+
+Run tests with:
+
+```powershell
+pytest
+```
+
 ## Phase 1 scope
 
 - Accept one or more public Instagram profile URLs.
@@ -85,4 +126,3 @@ Profile URL
 - Whether likely perceptual duplicates are skipped automatically or sent to a
   review queue.
 - Supported development operating systems beyond Windows.
-

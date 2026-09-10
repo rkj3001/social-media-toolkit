@@ -10,9 +10,10 @@
 | A modern browser | Use the localhost interface |
 | External hard drive | Store the live database and downloaded media |
 
-## Planned Python libraries
+## Python libraries
 
-The exact versions will be locked when implementation starts.
+Compatible version ranges are declared in `pyproject.toml`. An exact lock file
+will be added before the first downloadable release.
 
 | Library | Purpose |
 | --- | --- |
@@ -42,4 +43,3 @@ remain on the external drive.
 
 Copy `.env.example` to `.env` and set the external-drive path. `.env` and any
 authentication/session material remain local to the device.
-
