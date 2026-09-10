@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Job {{ job.id }}{% endblock %}
+{% block content %}
+  <a href="/" class="back-link">← Back to jobs</a>
+  <section class="hero">
+    <p class="eyebrow">Download job {{ job.id }}</p>
+    <h1>@{{ account.username }}</h1>
+    <p>
+      Category: <strong>{{ job.category.value }}</strong> ·
+      Status: <strong>{{ job.status.value }}</strong>
+    </p>
+    <a href="{{ account.profile_url }}" rel="noreferrer">View source profile</a>
+  </section>
+
+  <section class="stats" aria-label="Job counters">
+    <div><strong>{{ job.discovered_count }}</strong><span>Discovered</span></div>
+    <div><strong>{{ job.queued_count }}</strong><span>Queued</span></div>
+    <div><strong>{{ job.downloaded_count }}</strong><span>Downloaded</span></div>
+    <div><strong>{{ job.duplicate_count }}</strong><span>Duplicates</span></div>
+    <div><strong>{{ job.failed_count }}</strong><span>Failed</span></div>
+  </section>
+
+  <section class="panel">
+    <h2>Next step</h2>
+    <p>
+      This job is safely stored in SQLite. Media discovery and download processing
+      will be added after the permitted Instagram access method is selected.
+    </p>
+  </section>
+{% endblock %}
+

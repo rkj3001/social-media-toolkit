@@ -8,10 +8,11 @@
 
 ## Phase 1: Downloader foundation
 
-- Add Python packaging and development commands.
-- Implement typed configuration and external-drive availability checks.
-- Create SQLite models and migrations.
-- Add localhost pages for sources and download jobs.
+- [x] Add Python packaging and development commands.
+- [x] Implement typed configuration and external-drive availability checks.
+- [x] Create initial SQLite models and migrations.
+- [x] Add localhost pages for sources and download jobs.
+- [ ] Add source-post and canonical-media models with the discovery worker.
 
 ## Phase 2: Discovery and downloading
 
@@ -41,4 +42,3 @@
 - Integrate supported platform publishing APIs.
 - Add caption editing and scheduling.
 - Track rights/permission approval before publishing.
-
