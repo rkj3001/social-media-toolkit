@@ -13,14 +13,16 @@ The first runnable foundation is available:
 - Alembic-managed SQLite source and job tables.
 - Instagram profile URL validation and normalization.
 - Localhost pages for creating and inspecting categorized jobs.
-
-The current job runner records jobs as `queued`. It does not make Instagram
-network requests yet; discovery begins after a permitted access method is chosen.
+- Instaloader-backed discovery for public Reels, video posts, and carousel videos.
+- Original-byte video transfer, preserving any audio embedded in the source file.
+- SHA-256 exact deduplication with all source captions and URLs retained.
+- A shared worker used by both the localhost UI and `smt-download` CLI.
 
 ## Local setup
 
-Install Python 3.12 or later. FFmpeg is required when media processing is added,
-but it is not needed to view the current job UI.
+Install Python 3.12 or later. FFmpeg is not required for exact downloads yet; it
+will be required when audio inspection and perceptual duplicate detection are
+implemented.
 
 ```powershell
 python -m venv .venv
@@ -38,6 +40,14 @@ smt-downloader
 ```
 
 Open `http://127.0.0.1:8000`. Stop the server before disconnecting the drive.
+New UI jobs start in an in-process background task by default. Set
+`AUTO_START_JOBS=false` to create queued jobs that you start manually.
+
+The same worker is available from the terminal:
+
+```powershell
+smt-download PROFILE_OR_URL --category dog
+```
 
 Run tests with:
 
@@ -118,11 +128,15 @@ Profile URL
 - Only one process may write to the SQLite library at a time.
 - Credentials and browser/session data are never stored in Git.
 
-## Open decisions before implementation
+## Open decisions
 
-- Which Instagram access method is permitted and technically available for the
-  intended accounts.
+- Whether optional local Instaloader login sessions should be supported for
+  content the user is authorized to access.
 - Whether Phase 1 includes image-only posts or videos only.
 - Whether likely perceptual duplicates are skipped automatically or sent to a
   review queue.
 - Supported development operating systems beyond Windows.
+
+Instaloader is an unofficial Instagram client and may stop working when Instagram
+changes its site. The application does not bypass login challenges, CAPTCHAs,
+access controls, or rate limits.

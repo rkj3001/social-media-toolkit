@@ -25,7 +25,7 @@ def create_app(settings: Settings) -> FastAPI:
     @asynccontextmanager
     async def lifespan(app: FastAPI):
         storage.initialize()
-        if not inspect(engine).has_table("download_jobs"):
+        if not inspect(engine).has_table("source_media_items"):
             raise RuntimeError(
                 "Database schema is missing. Run `smt-migrate` before starting."
             )
@@ -41,4 +41,3 @@ def create_app(settings: Settings) -> FastAPI:
     app.mount("/static", StaticFiles(directory=assets), name="static")
     app.include_router(router)
     return app
-

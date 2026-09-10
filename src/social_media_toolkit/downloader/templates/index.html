@@ -6,7 +6,8 @@
     <h1>Create a download job</h1>
     <p>
       Add a public Instagram profile and choose how its media should be
-      categorized. The discovery worker will be connected in the next milestone.
+      categorized. Instaloader discovers video posts, carousel videos, and Reels;
+      SQLite prevents repeat downloads.
     </p>
   </section>
 
@@ -34,7 +35,7 @@
         {% endfor %}
       </select>
 
-      <button type="submit">Create job</button>
+      <button type="submit">Create and start job</button>
     </form>
   </section>
 
@@ -62,4 +63,3 @@
     {% endif %}
   </section>
 {% endblock %}
-

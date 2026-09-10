@@ -148,6 +148,14 @@ button {
   text-transform: capitalize;
 }
 
+.status-completed {
+  color: var(--accent) !important;
+}
+
+.status-failed {
+  color: var(--error) !important;
+}
+
 .stats {
   margin-bottom: 2rem;
 }
@@ -179,4 +187,3 @@ button {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
