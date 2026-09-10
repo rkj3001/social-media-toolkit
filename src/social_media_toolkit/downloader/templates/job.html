@@ -21,11 +21,23 @@
   </section>
 
   <section class="panel">
-    <h2>Next step</h2>
-    <p>
-      This job is safely stored in SQLite. Media discovery and download processing
-      will be added after the permitted Instagram access method is selected.
-    </p>
+    <h2>Job activity</h2>
+    {% if job.status.value in ["discovering", "downloading"] %}
+      <p>This job is running. Refresh this page to update its counters.</p>
+    {% elif job.status.value in ["queued", "failed"] %}
+      {% if job.last_error %}
+        <div class="error" role="alert">{{ job.last_error }}</div>
+      {% endif %}
+      <form method="post" action="/jobs/{{ job.id }}/run">
+        <button type="submit">
+          {% if job.status.value == "failed" %}Retry job{% else %}Start job{% endif %}
+        </button>
+      </form>
+    {% else %}
+      <p>
+        Downloaded files are stored under the selected category on the configured
+        media drive. Captions and source details are stored in SQLite.
+      </p>
+    {% endif %}
   </section>
 {% endblock %}
-

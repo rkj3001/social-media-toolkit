@@ -39,3 +39,9 @@ class LibraryStorage:
             raise ValueError("Library path must remain inside MEDIA_LIBRARY_ROOT")
         return candidate
 
+    def prepare_file(self, relative_path: str | Path) -> Path:
+        """Resolve a library file and create only its parent directories."""
+
+        destination = self.resolve_relative(relative_path)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        return destination

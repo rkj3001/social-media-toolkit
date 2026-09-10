@@ -2,14 +2,15 @@
 
 from pathlib import Path
 
-from fastapi import APIRouter, Form, Request
+from fastapi import APIRouter, BackgroundTasks, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
-from sqlalchemy.exc import IntegrityError
 
 from social_media_toolkit.config import Category
-from social_media_toolkit.database.models import DownloadJob, SourceAccount
+from social_media_toolkit.database.models import DownloadJob, JobStatus, SourceAccount
+from social_media_toolkit.downloader.jobs import create_download_job
+from social_media_toolkit.downloader.worker import run_job
 from social_media_toolkit.integrations.instagram import parse_profile_url
 
 
@@ -46,6 +47,7 @@ def home(request: Request) -> HTMLResponse:
 @router.post("/jobs", response_class=HTMLResponse)
 def create_job(
     request: Request,
+    background_tasks: BackgroundTasks,
     profile_url: str = Form(),
     category: Category = Form(),
 ) -> HTMLResponse:
@@ -64,45 +66,17 @@ def create_job(
             status_code=422,
         )
 
-    factory = request.app.state.session_factory
-    with factory.begin() as session:
-        account = session.scalar(
-            select(SourceAccount).where(
-                SourceAccount.platform == "instagram",
-                SourceAccount.username == profile.username,
-            )
+    job_id = create_download_job(
+        request.app.state.session_factory,
+        profile.canonical_url,
+        category,
+    )
+    if request.app.state.settings.auto_start_jobs:
+        background_tasks.add_task(
+            run_job,
+            request.app.state.settings,
+            job_id,
         )
-        if account is None:
-            account = SourceAccount(
-                platform="instagram",
-                username=profile.username,
-                profile_url=profile.canonical_url,
-            )
-            session.add(account)
-            try:
-                session.flush()
-            except IntegrityError:
-                # A concurrent request may have inserted the account first.
-                session.rollback()
-                with factory.begin() as retry_session:
-                    account = retry_session.scalar(
-                        select(SourceAccount).where(
-                            SourceAccount.platform == "instagram",
-                            SourceAccount.username == profile.username,
-                        )
-                    )
-                    if account is None:
-                        raise
-                    job = DownloadJob(account_id=account.id, category=category)
-                    retry_session.add(job)
-                    retry_session.flush()
-                    job_id = job.id
-                return RedirectResponse(f"/jobs/{job_id}", status_code=303)
-
-        job = DownloadJob(account_id=account.id, category=category)
-        session.add(job)
-        session.flush()
-        job_id = job.id
 
     return RedirectResponse(f"/jobs/{job_id}", status_code=303)
 
@@ -132,3 +106,20 @@ def job_details(request: Request, job_id: int) -> HTMLResponse:
         {"job": job, "account": account},
     )
 
+
+@router.post("/jobs/{job_id}/run")
+def start_job(
+    request: Request,
+    job_id: int,
+    background_tasks: BackgroundTasks,
+) -> RedirectResponse:
+    factory = request.app.state.session_factory
+    with factory() as session:
+        job = session.get(DownloadJob, job_id)
+        runnable = job is not None and job.status in {
+            JobStatus.QUEUED,
+            JobStatus.FAILED,
+        }
+    if runnable:
+        background_tasks.add_task(run_job, request.app.state.settings, job_id)
+    return RedirectResponse(f"/jobs/{job_id}", status_code=303)

@@ -12,6 +12,7 @@ dependencies = [
   "alembic>=1.14,<2",
   "fastapi>=0.115,<1",
   "httpx>=0.28,<1",
+  "instaloader>=4.14,<5",
   "jinja2>=3.1,<4",
   "pydantic-settings>=2.7,<3",
   "python-multipart>=0.0.20,<1",
@@ -26,6 +27,7 @@ dev = [
 
 [project.scripts]
 smt-downloader = "social_media_toolkit.downloader.run:main"
+smt-download = "social_media_toolkit.downloader.cli:main"
 smt-migrate = "social_media_toolkit.database.migrate:main"
 
 [tool.hatch.build.targets.wheel]
@@ -34,4 +36,3 @@ packages = ["src/social_media_toolkit"]
 [tool.pytest.ini_options]
 addopts = "-q"
 testpaths = ["tests"]
-

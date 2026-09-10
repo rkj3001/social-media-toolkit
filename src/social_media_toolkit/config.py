@@ -30,6 +30,7 @@ class Settings(BaseSettings):
     app_port: int = 8000
     default_category: Category = Category.UNCATEGORIZED
     log_level: str = "INFO"
+    auto_start_jobs: bool = True
 
     @field_validator("app_host")
     @classmethod
@@ -54,4 +55,3 @@ class Settings(BaseSettings):
     @property
     def database_url(self) -> str:
         return f"sqlite:///{self.database_path.as_posix()}"
-

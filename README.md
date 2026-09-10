@@ -106,9 +106,10 @@ accounts are retained without wasting storage.
 
 ## Development status
 
-This repository currently contains the agreed architecture and project skeleton.
-Implementation begins with the Downloader milestones in
-[docs/roadmap.md](docs/roadmap.md).
+The Downloader foundation is runnable. It includes the localhost job UI, a
+terminal command, Instaloader-backed video discovery, SQLite source metadata,
+external-drive storage, and SHA-256 exact deduplication. Audio inspection and
+perceptual matching remain planned; see [docs/roadmap.md](docs/roadmap.md).
 
 See [software requirements](docs/software-requirements.md) before development.
 

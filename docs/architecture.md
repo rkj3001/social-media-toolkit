@@ -63,8 +63,17 @@ Redis, containers, and cloud infrastructure are intentionally excluded.
 - `caption`
 - `published_at`
 - `media_type`
+
+### source_media_items
+
+- `id`
+- `source_post_id`
+- `platform_media_id`
+- `item_index`
+- `video_url`
+- `status`
 - `canonical_media_id`
-- `download_status`
+- download attempts and last error
 
 ### canonical_media
 
@@ -75,17 +84,6 @@ Redis, containers, and cloud infrastructure are intentionally excluded.
 - `byte_size`
 - `has_audio`
 - perceptual frame hashes
-
-### download_attempts
-
-- `id`
-- `source_post_id`
-- `attempt_number`
-- `started_at`
-- `completed_at`
-- `http_status`
-- `error_code`
-- `error_message`
 
 ## Duplicate workflow
 
@@ -111,4 +109,3 @@ media\dog\example-account\2026\09\shortcode.mp4
 
 This allows the library to move between Windows drive letters and leaves room for
 other operating systems later.
-

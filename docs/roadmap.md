@@ -4,7 +4,7 @@
 
 - Create the GitHub-ready repository structure.
 - Agree on scope, software, storage layout, and application boundaries.
-- Confirm permitted Instagram access options before implementation.
+- Select a replaceable Instagram retrieval adapter.
 
 ## Phase 1: Downloader foundation
 
@@ -12,20 +12,21 @@
 - [x] Implement typed configuration and external-drive availability checks.
 - [x] Create initial SQLite models and migrations.
 - [x] Add localhost pages for sources and download jobs.
-- [ ] Add source-post and canonical-media models with the discovery worker.
+- [x] Add source-post, source-media, and canonical-media models.
+- [x] Add an Instaloader-backed worker shared by the CLI and UI.
 
 ## Phase 2: Discovery and downloading
 
-- Validate source profile URLs.
-- Implement permitted media discovery and pagination.
-- Store source posts and captions.
-- Download to temporary files and atomically finalize successful files.
-- Add resumable jobs, retries, and rate-limit handling.
+- [x] Validate source profile URLs and username-only CLI input.
+- [x] Discover public Reels, video posts, and carousel video children.
+- [x] Store source posts and captions.
+- [x] Download to temporary files and atomically finalize successful files.
+- [ ] Add durable job resumption and explicit rate-limit handling.
 
 ## Phase 3: Duplicate detection
 
-- Enforce media ID and shortcode uniqueness.
-- Add SHA-256 exact matching.
+- [x] Enforce source media ID and shortcode uniqueness.
+- [x] Add SHA-256 exact matching.
 - Extract duration and representative frames with FFmpeg.
 - Add a possible-duplicate review queue.
 

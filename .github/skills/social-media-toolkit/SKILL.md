@@ -70,7 +70,8 @@ Phase 1 uses:
 - FastAPI and Uvicorn.
 - Server-rendered Jinja2 templates with minimal browser JavaScript.
 - SQLAlchemy and Alembic with SQLite.
-- HTTPX for permitted API and media requests.
+- Instaloader behind the Instagram integration boundary for public discovery and
+  original media transfer.
 - Pydantic Settings for configuration.
 - FFmpeg and ffprobe for media inspection and fingerprint frames.
 - Pillow and ImageHash for perceptual hashes.
@@ -170,16 +171,16 @@ delete uncertain matches.
 
 ## Instagram and rights boundaries
 
-Before implementing Instagram retrieval, verify the currently supported Meta API,
-permissions, and terms from official documentation. Do not assume that arbitrary
-public accounts or their full history are available through an official API.
+Instagram retrieval currently uses Instaloader as a replaceable Python
+dependency. It is unofficial and may break when Instagram changes its site.
+Keep all Instaloader-specific code behind the integration boundary.
 
 Do not implement:
 
 - Authentication or login bypass.
 - CAPTCHA solving or bypass.
 - Rate-limit evasion.
-- Private API reverse engineering.
+- New private API reverse engineering outside the Instaloader dependency.
 - Access-control circumvention.
 - Proxy rotation intended to avoid platform enforcement.
 
@@ -224,11 +225,10 @@ instructions.
 Ask before implementing when a task depends on an unresolved product choice:
 
 - Whether image-only Instagram posts are in Phase 1.
-- Which permitted Instagram access method and credentials are available.
+- Whether optional local Instaloader session login should be added.
 - Whether a perceptual match should be skipped or manually reviewed.
 - Whether a newly requested feature belongs in Downloader, Library, or Publisher.
 - Whether support beyond Windows is required now.
 
 Do not block routine implementation on choices already established in the
 repository documentation.
-

@@ -14,7 +14,7 @@ from social_media_toolkit.downloader.app import create_app
 
 
 def create_test_settings(tmp_path: Path) -> Settings:
-    return Settings(media_library_root=tmp_path)
+    return Settings(media_library_root=tmp_path, auto_start_jobs=False)
 
 
 def test_home_page_and_job_creation(tmp_path: Path) -> None:
@@ -65,4 +65,3 @@ def test_invalid_profile_is_shown_without_creating_job(tmp_path: Path) -> None:
 
     assert response.status_code == 422
     assert "not a post or Reel URL" in response.text
-

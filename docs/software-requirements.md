@@ -6,7 +6,7 @@
 | --- | --- |
 | Git | Version control and GitHub synchronization |
 | Python 3.12 or later | Backend, jobs, database, and localhost server |
-| FFmpeg and ffprobe | Validate media, inspect audio, and create fingerprints |
+| FFmpeg and ffprobe | Later: inspect audio/duration and create fingerprints |
 | A modern browser | Use the localhost interface |
 | External hard drive | Store the live database and downloaded media |
 
@@ -22,7 +22,7 @@ will be added before the first downloadable release.
 | Jinja2 | Simple server-rendered UI |
 | SQLAlchemy | SQLite models and queries |
 | Alembic | Database migrations |
-| HTTPX | Authorized HTTP/API requests |
+| Instaloader | Public Instagram discovery and original media transfer |
 | Pydantic Settings | Typed environment configuration |
 | Pillow and ImageHash | Perceptual frame hashes |
 | pytest | Automated tests |
@@ -43,3 +43,7 @@ remain on the external drive.
 
 Copy `.env.example` to `.env` and set the external-drive path. `.env` and any
 authentication/session material remain local to the device.
+
+Instaloader is an unofficial integration rather than a Meta-supported bulk
+download API. Its compatibility depends on Instagram and should be treated as a
+replaceable adapter.
